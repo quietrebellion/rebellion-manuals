@@ -147,12 +147,25 @@
   .skip:focus { position: static; display: inline-block; padding: .5rem; }
   .privacy { font-size: .85rem; color: var(--sage); margin-top: 1.25rem; max-width: 52ch; }
 
+  .beliefs-ref { background: var(--sage-soft); border-radius: 10px; padding: .85rem 1.2rem; margin: 0 0 1.4rem; }
+  .beliefs-ref ol { margin: .5rem 0 .2rem 1.3rem; }
+  .beliefs-ref li { font-weight: 600; margin-bottom: .35rem; }
+  .beliefs-ref summary { padding: .15rem 0; }
+
+  .print-head, .print-foot { display: none; }
+
   @media print {
-    .hero, nav.progress, footer, .btn-row, .skip, .hint, .chips, .kit-optin { display: none !important; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .hero, nav.progress, footer, .btn-row, .skip, .hint, .chips, .kit-optin, .beliefs-ref { display: none !important; }
     body { background: #fff; }
-    .summary-block { max-height: none; overflow: visible; border: none; padding: 0; }
-    .card, .card.soft { background: #fff; border: 1px solid #999; }
-    .dark-card { background: #fff; color: #000; border: 1px solid #999; }
+    .print-head { display: block; background: #064B56 !important; color: #F7F3E8; border-radius: 8pt; padding: 16pt 20pt; margin: 0 0 14pt; }
+    .print-head .ph-kicker { display: block; font-family: 'DM Mono', monospace; letter-spacing: .14em; text-transform: uppercase; font-size: 8.5pt; color: #DBE0B2; }
+    .print-head .ph-title { display: block; font-size: 22pt; font-weight: 800; margin-top: 2pt; color: #F7F3E8; }
+    .print-head .ph-rule { display: block; width: 54pt; height: 3pt; background: #F2542D !important; margin-top: 8pt; }
+    .print-foot { display: block; margin-top: 18pt; border-top: 2pt solid #DBE0B2; padding-top: 8pt; font-family: 'DM Mono', monospace; font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: #4C554C; }
+    .summary-block { max-height: none; overflow: visible; border: 2px solid #DBE0B2; border-radius: 8pt; padding: 12pt; }
+    .card, .card.soft { background: #fff; border: 1px solid #DBE0B2; }
+    .dark-card { background: #fff; color: #000; border: 1px solid #DBE0B2; }
     .dark-card h3, .dark-card a { color: #000; }
     input, select { border: none; padding: 0; font-weight: 600; }
     label { margin-top: .5rem; }
@@ -181,6 +194,12 @@
 </nav>
 
 <main id="app">
+
+  <div class="print-head" aria-hidden="true">
+    <span class="ph-kicker">Rebellion Manual &middot; Core Beliefs</span>
+    <span class="ph-title">Bedrock</span>
+    <span class="ph-rule"></span>
+  </div>
 
   <!-- INTRO -->
   <section class="screen" data-screen="intro" aria-labelledby="h-intro">
@@ -310,6 +329,10 @@
   <section class="screen" data-screen="prompts" aria-labelledby="h-prompts">
     <span class="mono kicker">Reflection prompts</span>
     <h2 id="h-prompts">Going deeper</h2>
+    <details class="beliefs-ref" open>
+      <summary>Your beliefs, for reference</summary>
+      <ol data-beliefs-ref></ol>
+    </details>
     <p>You don&rsquo;t need all of these. Open the ones that spark something and skip the rest.</p>
     <div id="promptGroups"></div>
     <div class="btn-row">
@@ -322,6 +345,10 @@
   <section class="screen" data-screen="onething" aria-labelledby="h-onething">
     <span class="mono kicker">One thing, this week</span>
     <h2 id="h-onething">Say one out loud</h2>
+    <details class="beliefs-ref" open>
+      <summary>Your beliefs, for reference</summary>
+      <ol data-beliefs-ref></ol>
+    </details>
     <p>Pick the belief with the most weight on it and tell one person this week, out loud. Not a post or a journal entry, an actual person.</p>
     <p>Decide now who you&rsquo;ll tell and when. If it doesn&rsquo;t have a name and a time on it, it won&rsquo;t happen.</p>
     <label for="otBelief">The belief</label>
@@ -347,11 +374,11 @@
       <button class="btn-secondary" id="printPdf">Save as a PDF</button>
       <button class="btn-secondary" id="calBtn">Put the 30-day check-in on my calendar</button>
     </div>
-    <p class="hint" style="margin-top:.75rem;">The calendar file asks one question when it fires: which of these beliefs ran the month?</p>
+    <p class="hint" style="margin-top:.75rem;">The calendar button downloads a file. Open it and it puts one hold on your calendar, thirty days from today, with one question on it: which of these beliefs ran the month? It lives in your calendar app, so there&rsquo;s no email involved and nothing leaves this device.</p>
 
     <div class="card kit-optin">
-      <h3>Want the check-ins by email?</h3>
-      <p>Three emails over thirty days. A nudge at one week, one good question at day thirty, and a closing note. Nothing else unless you ask for it. Your answers stay on this device either way.</p>
+      <h3>Want the check-ins by email instead?</h3>
+      <p>Same thirty-day arc, delivered. Three emails: a nudge at one week, the day-thirty question, and a closing note. Nothing else unless you ask for it. Take the calendar hold, the emails, or both. Your answers stay on this device either way.</p>
       <script async data-uid="0df3225616" src="https://rebellioncollective.kit.com/0df3225616/index.js"></script>
     </div>
 
@@ -373,6 +400,11 @@
     </div>
 
     <div class="card">
+      <h3>Bedrock is the first of ten</h3>
+      <p>The Rebellion Manuals are a series of working tools like this one, and nine more are in the workshop. They all live at <a href="https://manuals.rebellioncollective.com">manuals.rebellioncollective.com</a>. If you took the emails above, the last one offers a door to hear when each new manual ships.</p>
+    </div>
+
+    <div class="card">
       <h3>If this brought up something difficult</h3>
       <p>That happens, and it isn&rsquo;t a sign you did this wrong. Talk to a friend you trust, a mentor, or a coach. If what came up needs a therapist, get a therapist, and if you&rsquo;re not sure what kind of help you need, email us and we&rsquo;ll sort out where to point you.</p>
     </div>
@@ -386,6 +418,8 @@
       <button class="btn-ghost" id="startOver">Start over with a blank page</button>
     </div>
   </section>
+
+  <div class="print-foot" aria-hidden="true">Rebellion Collective &middot; manuals.rebellioncollective.com</div>
 </main>
 
 <footer>
@@ -436,8 +470,8 @@
     if (name === 'behavior') renderBehavior();
     if (name === 'weigh') renderWeigh();
     if (name === 'yours') renderYours();
-    if (name === 'prompts') renderPrompts();
-    if (name === 'onething') renderOneThing();
+    if (name === 'prompts') { renderPrompts(); renderBeliefsRef(); }
+    if (name === 'onething') { renderOneThing(); renderBeliefsRef(); }
     if (name === 'summary') renderSummary();
     if (name === 'capture') renderBeliefs();
     window.scrollTo({ top: name === 'intro' ? 0 : $('#app').offsetTop - 60, behavior: 'auto' });
@@ -480,11 +514,17 @@
     save(); renderBeliefs();
   });
 
+  function renderBeliefsRef() {
+    $$('[data-beliefs-ref]').forEach(ol => {
+      ol.innerHTML = state.beliefs.map(b => `<li>${esc(b.text)}</li>`).join('');
+    });
+  }
+
   function renderBeliefs() {
     const wrap = $('#beliefList');
-    wrap.innerHTML = state.beliefs.map(b => `
+    wrap.innerHTML = state.beliefs.map((b, i) => `
       <div class="belief-item" data-id="${b.id}">
-        <p class="text">${esc(b.text)}</p>
+        <p class="text">${i + 1}. ${esc(b.text)}</p>
         ${b.chain.length ? `<p class="belief-chain">Started as: ${esc(b.chain[0])}</p>` : ''}
         <div class="belief-tools">
           <button class="btn-secondary btn-small" data-deepen="${b.id}">Go deeper</button>
@@ -534,9 +574,9 @@
 
   // ---------- steps two & three ----------
   function renderBehavior() {
-    $('#behaviorList').innerHTML = state.beliefs.map(b => `
+    $('#behaviorList').innerHTML = state.beliefs.map((b, i) => `
       <div class="belief-item" data-id="${b.id}">
-        <p class="text">${esc(b.text)}</p>
+        <p class="text">${i + 1}. ${esc(b.text)}</p>
         <label for="w-${b.id}">Where do you see it in what you actually do?</label>
         <textarea id="w-${b.id}" rows="2" data-field="where" data-belief="${b.id}">${esc(b.where)}</textarea>
         <label for="s-${b.id}">Sort it</label>
@@ -551,9 +591,9 @@
 
   // ---------- step four ----------
   function renderWeigh() {
-    $('#weighList').innerHTML = state.beliefs.map(b => `
+    $('#weighList').innerHTML = state.beliefs.map((b, i) => `
       <div class="belief-item" data-id="${b.id}">
-        <p class="text">${esc(b.text)}</p>
+        <p class="text">${i + 1}. ${esc(b.text)}</p>
         <label for="ben-${b.id}">How it benefits me</label>
         <textarea id="ben-${b.id}" rows="2" data-field="benefit" data-belief="${b.id}">${esc(b.benefit)}</textarea>
         <label for="cost-${b.id}">How it limits me</label>
@@ -564,9 +604,9 @@
   // ---------- step five ----------
   const MARKS = ['Mine', 'Handed to me', 'Handed to me, and I’m keeping it'];
   function renderYours() {
-    $('#yoursList').innerHTML = state.beliefs.map(b => `
+    $('#yoursList').innerHTML = state.beliefs.map((b, i) => `
       <div class="belief-item" data-id="${b.id}">
-        <p class="text">${esc(b.text)}</p>
+        <p class="text">${i + 1}. ${esc(b.text)}</p>
         <label for="t-${b.id}">Who taught you this?</label>
         <textarea id="t-${b.id}" rows="2" data-field="taught" data-belief="${b.id}">${esc(b.taught)}</textarea>
         <label for="f-${b.id}">Who was it good for?</label>
