@@ -129,6 +129,9 @@
   .dark-card { background: var(--teal); color: var(--bone); border-radius: 10px; padding: 1.4rem 1.5rem; margin: 1.5rem 0; }
   .dark-card h3 { color: var(--bone); }
   .dark-card a { color: var(--sage); }
+  .rc-quote { border-left: 4px solid var(--ember); padding-left: 1rem; margin: 1.4rem 0; font-style: italic; color: var(--sage); }
+  .rc-quote .attr { display: inline-block; margin-top: .35rem; font-style: normal; font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+  .rc-signoff { font-weight: 600; margin-bottom: 0; }
 
   .summary-block { white-space: pre-wrap; background: #fff; border: 2px solid var(--sage); border-radius: 10px; padding: 1.2rem; font-size: .92rem; max-height: 320px; overflow: auto; }
 
@@ -167,6 +170,7 @@
     .card, .card.soft { background: #fff; border: 1px solid #DBE0B2; }
     .dark-card { background: #fff; color: #000; border: 1px solid #DBE0B2; }
     .dark-card h3, .dark-card a { color: #000; }
+    .rc-quote { color: #000; border-left-color: #DBE0B2; }
     input, select { border: none; padding: 0; font-weight: 600; }
     label { margin-top: .5rem; }
   }
@@ -300,6 +304,7 @@
       <div class="btn-row" style="justify-content:center;">
         <button class="btn-secondary" id="pauseExit">Close for today</button>
         <button class="btn-primary" data-go="yours">Keep going</button>
+        <button class="btn-ghost" data-go="weigh">Back</button>
       </div>
     </div>
   </section>
@@ -370,15 +375,15 @@
     <div class="summary-block" id="summaryOut" tabindex="0" role="region" aria-label="Your answers"></div>
     <div class="btn-row">
       <button class="btn-primary" id="copyAll">Copy everything</button>
-      <button class="btn-secondary" id="downloadTxt">Download as a file</button>
       <button class="btn-secondary" id="printPdf">Save as a PDF</button>
       <button class="btn-secondary" id="calBtn">Put the 30-day check-in on my calendar</button>
     </div>
     <p class="hint" style="margin-top:.75rem;">The calendar button downloads a file. Open it and it puts one hold on your calendar, thirty days from today, with one question on it: which of these beliefs ran the month? It lives in your calendar app, so there&rsquo;s no email involved and nothing leaves this device.</p>
 
     <div class="card kit-optin">
-      <h3>Want the check-ins by email instead?</h3>
-      <p>Same thirty-day arc, delivered. Three emails: a nudge at one week, the day-thirty question, and a closing note. Nothing else unless you ask for it. Take the calendar hold, the emails, or both. Your answers stay on this device either way.</p>
+      <h3>Want the check-ins by email?</h3>
+      <p>Three emails: a nudge at one week, the day-thirty question, and a closing note.</p>
+      <p>Nothing else unless you ask for it. Take the calendar hold, the emails, or both. Your answers stay on this browser either way.</p>
       <script async data-uid="0df3225616" src="https://rebellioncollective.kit.com/0df3225616/index.js"></script>
     </div>
 
@@ -389,7 +394,9 @@
 
     <div class="card soft">
       <h3>If one of them has to go</h3>
-      <p>A belief fades when a different one starts collecting evidence, and not before. Take one you marked handed to me and write what you&rsquo;d rather carry, in your own words. Keep it close enough to believe today, half-believable beats inspiring. Then give it one test this month, one moment where you act as if the new belief is true and watch what happens.</p>
+      <p>A belief only fades when another one starts collecting proof.</p>
+      <p>Take one you marked handed to me. Write what you&rsquo;d rather carry instead, in your own words. Keep it close enough to believe today. Half-believable beats inspiring.</p>
+      <p>Then test it once this month. Act as if the new one is true and watch what happens.</p>
       <p><em>I have to be available</em> becomes <em>things hold without me</em>. The test: one Saturday with Slack off.</p>
       <label for="rfOld">The belief you're putting down</label>
       <select id="rfOld" data-rf="old"></select>
@@ -401,7 +408,8 @@
 
     <div class="card">
       <h3>Bedrock is the first of ten</h3>
-      <p>The Rebellion Manuals are a series of working tools like this one, and nine more are in the workshop. They all live at <a href="https://manuals.rebellioncollective.com">manuals.rebellioncollective.com</a>. If you took the emails above, the last one offers a door to hear when each new manual ships.</p>
+      <p>The Rebellion Manuals are a series of working tools like this one, and nine more are in the toolbox.</p>
+      <p>They all live at <a href="https://manuals.rebellioncollective.com">manuals.rebellioncollective.com</a>. If you leave your email above, the last one offers a way to hear when each new manual ships.</p>
     </div>
 
     <div class="card">
@@ -410,11 +418,14 @@
     </div>
 
     <div class="dark-card">
-      <h3>How was this one?</h3>
-      <p>Email us at <a href="mailto:hello@rebellioncollective.com">hello@rebellioncollective.com</a> and tell us what you found. We read every one.</p>
-      <p style="margin-bottom:0;">Be patient with yourself here. You may be getting to know yourself for the first time.</p>
+      <h3>How was this for you?</h3>
+      <p>Email us at <a href="mailto:hello@rebellioncollective.com">hello@rebellioncollective.com</a> and tell us what you found. We read every message.</p>
+      <p>Be patient with yourself here.<br>You may be getting to know yourself for the first time.</p>
+      <blockquote class="rc-quote">&ldquo;Be so free that your very existence is an act of rebellion.&rdquo;<br><span class="attr">Inspired by Albert Camus</span></blockquote>
+      <p class="rc-signoff">Be Rebellious &#10084;&#65039;&#8205;&#128293;</p>
     </div>
     <div class="btn-row">
+      <button class="btn-secondary" data-go="onething">Back</button>
       <button class="btn-ghost" id="startOver">Start over with a blank page</button>
     </div>
   </section>
@@ -728,12 +739,6 @@
     setTimeout(() => { $('#copyAll').textContent = 'Copy everything'; }, 2500);
   });
   $('#printPdf').addEventListener('click', () => { window.print(); });
-  $('#downloadTxt').addEventListener('click', () => {
-    const blob = new Blob([summaryText()], { type: 'text/plain' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = 'my-bedrock-beliefs.txt'; a.click();
-    URL.revokeObjectURL(a.href);
-  });
   $('#calBtn').addEventListener('click', () => {
     const d = new Date(); d.setDate(d.getDate() + 30);
     const ymd = d.toISOString().slice(0, 10).replace(/-/g, '');
