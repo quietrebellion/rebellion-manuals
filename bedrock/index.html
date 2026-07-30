@@ -218,7 +218,7 @@
 
     <span class="mono kicker">Start here</span>
     <h2 id="h-intro">There&rsquo;s a belief you never question</h2>
-    <p>Some things you say about yourself like they&rsquo;re facts. <em>I&rsquo;m not creative. I can&rsquo;t slow down. People leave.</em> There&rsquo;s no heat in them, and you&rsquo;ve said them for so long you don&rsquo;t even hear them anymore.</p>
+    <p>Some things you say about yourself like they&rsquo;re facts. <em>I&rsquo;m not creative. I can&rsquo;t slow down. People leave.</em> They just fall out of your mouth, and you&rsquo;ve said them for so long you don&rsquo;t even hear them anymore.</p>
     <p>You&rsquo;d never think to argue with any of them. They just feel true.</p>
     <p>That&rsquo;s a core belief: a story you&rsquo;ve told for so long it stopped feeling like a story.</p>
     <div class="card soft"><p style="font-size:1.15rem;">A belief you&rsquo;ve never questioned feels like fact. That&rsquo;s the bedrock everything else gets built on.</p></div>
@@ -238,7 +238,7 @@
     <span class="mono kicker">Step one</span>
     <h2 id="h-capture">Get them out of your head</h2>
     <p>Write down every story you tell about yourself, about other people, and about how the world works. Don&rsquo;t sort them or fix the wording, just get them on the page.</p>
-    <p class="hint">If you go blank, that&rsquo;s normal. Tap a starter to begin a sentence, or look at what you say on repeat: the advice you give everyone, the complaint that comes out of you every week, the line about yourself you deliver flat, like a fact.</p>
+    <p>If you go blank, that&rsquo;s normal. Tap a starter to begin a sentence, or look at what you say on repeat: the advice you give everyone, the complaint that comes out of you every week, the line about yourself you deliver flat, like a fact.</p>
     <div class="chips" role="group" aria-label="Sentence starters">
       <button class="chip" data-stem="I&rsquo;m the kind of person who ">I&rsquo;m the kind of person who&hellip;</button>
       <button class="chip" data-stem="People always ">People always&hellip;</button>
@@ -253,7 +253,10 @@
     <div id="beliefList" style="margin-top:1.5rem;"></div>
     <div class="card soft" id="deepenExplainer">
       <h3>Go one layer down</h3>
-      <p>Some of what you wrote is surface, complaints and habits and symptoms. Use <strong>Go deeper</strong> on any line and this page will ask: <em>if that&rsquo;s true, what does it say about you?</em> Keep answering until the answer stops moving. That last line is bedrock.</p>
+      <p>Some of what you wrote is surface complaints, habits and symptoms.</p>
+      <p>Use <strong>Go deeper</strong> on any line and this page will ask: <em>if that&rsquo;s true, what does it say about you?</em></p>
+      <p>Keep answering until you run out of answers.</p>
+      <p>That last line is bedrock, and it contains data.</p>
     </div>
     <div class="btn-row">
       <button class="btn-secondary" data-go="intro">Back</button>
@@ -266,11 +269,8 @@
     <span class="mono kicker">Steps two and three</span>
     <h2 id="h-behavior">Where they show up. Then sort them.</h2>
     <p>Take each belief and find it in your actual behavior. What does it make you do? What does it stop you from doing? If you can&rsquo;t point to something real, keep looking.</p>
-    <p class="hint">Then sort: Personal beliefs are about you. Interpersonal beliefs are about other people. Existential beliefs are about how the world works.</p>
-    <div class="card soft">
-      <span class="mono">Example</span>
-      <p><em>I have to be available and do everything myself or things fall apart.</em> &mdash; Personal &mdash; <em>I answer Slack at dinner. I&rsquo;ve never once let a message sit overnight.</em></p>
-    </div>
+    <p>Then sort: Personal beliefs are about you. Interpersonal beliefs are about other people. Existential beliefs are about how the world works.</p>
+    <div class="card soft" id="behaviorEcho" hidden></div>
     <div id="behaviorList"></div>
     <div class="btn-row">
       <button class="btn-secondary" data-go="capture">Back</button>
@@ -282,8 +282,11 @@
   <section class="screen" data-screen="weigh" aria-labelledby="h-weigh">
     <span class="mono kicker">Step four</span>
     <h2 id="h-weigh">What it costs, what it provides</h2>
-    <p>Now weigh each one. What has it gotten you? What has it cost you?</p>
-    <p>Even the worst of these did a job for you once. Maybe it kept you safe in a house where being useful was how you got loved. Maybe it carried you through a workplace that punished rest. Beliefs that protect something stick around long after the danger is gone. So find what it protected, then be honest about what it costs you now.</p>
+    <p>Now weigh each one.<br>What has it gotten you? What has it cost you?</p>
+    <p>Even the worst of these did a job for you once.</p>
+    <p>Maybe it kept you safe in a house where being useful was how you got loved.</p>
+    <p>Maybe it carried you through a workplace that punished rest.</p>
+    <p>Beliefs that protect something stick around long after the danger is gone. So find what it protected, if it still needs that protection, and then be honest about what it costs you now.</p>
     <div class="card soft">
       <span class="mono">Example</span>
       <p><em>I have to be available.</em> Benefits: <em>a reputation for being reliable, two promotions on the back of it.</em> Costs: <em>six years of late evenings. My wife stopped asking if I was coming to dinner.</em></p>
@@ -520,7 +523,7 @@
     const el = $('#beliefInput');
     const text = el.value.trim();
     if (!text) { alertLine('Write the belief first, then add it.'); return; }
-    state.beliefs.push({ id: Date.now() + Math.random(), text, chain: [], where: '', sort: '', benefit: '', cost: '', taught: '', whoFor: '', mark: '' });
+    state.beliefs.push({ id: Date.now() + '-' + Math.floor(Math.random() * 1e6), text, chain: [], where: '', sort: '', benefit: '', cost: '', taught: '', whoFor: '', mark: '' });
     el.value = ''; el.focus();
     save(); renderBeliefs();
   });
@@ -584,7 +587,23 @@
   });
 
   // ---------- steps two & three ----------
+  function renderBehaviorEcho() {
+    const box = $('#behaviorEcho');
+    const b = state.beliefs[0];
+    if (!b) { box.hidden = true; box.innerHTML = ''; return; }
+    box.hidden = false;
+    if (b.where && b.where.trim() && b.sort) {
+      box.innerHTML = `<span class="mono">Your first one, filled in</span>
+        <p><em>${esc(b.text)}</em> &mdash; ${esc(b.sort)} &mdash; <em>${esc(b.where.trim())}</em></p>`;
+    } else {
+      box.innerHTML = `<span class="mono">Starting with your first one</span>
+        <p><em>${esc(b.text)}</em></p>
+        <p>Where does that one show up in what you actually do? Name something real, then sort it.</p>`;
+    }
+  }
+
   function renderBehavior() {
+    renderBehaviorEcho();
     $('#behaviorList').innerHTML = state.beliefs.map((b, i) => `
       <div class="belief-item" data-id="${b.id}">
         <p class="text">${i + 1}. ${esc(b.text)}</p>
@@ -637,13 +656,19 @@
   });
 
   // shared field binding
+  function bindField(f) {
+    const b = state.beliefs.find(x => String(x.id) === f.dataset.belief);
+    if (!b) return;
+    b[f.dataset.field] = f.value; save();
+    if (state.screen === 'behavior' && b === state.beliefs[0]) renderBehaviorEcho();
+  }
+  document.addEventListener('change', e => {
+    const f = e.target.closest('[data-field]');
+    if (f) bindField(f);
+  });
   document.addEventListener('input', e => {
     const f = e.target.closest('[data-field]');
-    if (f) {
-      const b = state.beliefs.find(x => String(x.id) === f.dataset.belief);
-      if (b) { b[f.dataset.field] = f.value; save(); }
-      return;
-    }
+    if (f) { bindField(f); return; }
     const p = e.target.closest('[data-prompt]');
     if (p) { state.prompts[p.dataset.prompt] = p.value; save(); }
     const ot = e.target.closest('[data-ot]');
