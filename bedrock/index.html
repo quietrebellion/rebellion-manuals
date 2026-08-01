@@ -97,7 +97,7 @@
     padding: .75rem 1.4rem; border: 2px solid var(--teal);
   }
   .btn-small { font-size: .9rem; padding: .65rem 1.1rem; min-height: 44px; }
-  .btn-ghost { background: transparent; color: var(--teal); text-decoration: underline; padding: .5rem; font-size: .9rem; }
+  .btn-ghost { background: transparent; color: var(--teal); text-decoration: underline; padding: .5rem .75rem; font-size: .9rem; min-height: 44px; }
   button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
     outline: 3px solid var(--ember); outline-offset: 2px;
   }
@@ -148,7 +148,9 @@
   .summary-block { white-space: pre-wrap; background: #fff; border: 2px solid var(--sage); border-radius: 10px; padding: 1.2rem; font-size: .92rem; max-height: 320px; overflow: auto; }
 
   footer { border-top: 2px solid var(--sage); margin-top: 3rem; padding: 1.2rem 1.25rem; }
-  .footer-inner { max-width: 720px; margin: 0 auto; display: flex; justify-content: space-between; }
+  .footer-inner { max-width: 720px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 1rem; }
+  body, .belief-item .text, .summary-block, .card, p, li { overflow-wrap: anywhere; }
+  .mono { overflow-wrap: anywhere; }
   .footer-inner .mono { color: #4c554c; }
 
   .screen { display: none; }
@@ -209,7 +211,7 @@
   </div>
 </nav>
 
-<main id="app">
+<main id="app" tabindex="-1">
 
   <div class="print-head" aria-hidden="true">
     <span class="ph-kicker">Rebellion Manual &middot; Core Beliefs</span>
@@ -505,6 +507,7 @@
   const esc = s => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   // ---------- navigation ----------
+  let booted = false;
   function go(name) {
     if (!SCREENS.includes(name)) return;
     state.screen = name; save();
@@ -524,7 +527,7 @@
     if (name === 'summary') renderSummary();
     if (name === 'capture') renderBeliefs();
     window.scrollTo({ top: name === 'intro' ? 0 : $('#app').offsetTop - 60, behavior: 'auto' });
-    const h = $('.screen.active h2'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+    const h = $('.screen.active h2'); if (h && booted) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
   }
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-go]');
@@ -629,7 +632,8 @@
     box.hidden = false;
     if (b.where && b.where.trim() && b.sort) {
       box.innerHTML = `<span class="mono">Your first one, filled in</span>
-        <p><em>${esc(b.text)}</em> &mdash; ${esc(b.sort)} &mdash; <em>${esc(b.where.trim())}</em></p>`;
+        <p><em>${esc(b.text)}</em></p>
+        <p>Type: ${esc(b.sort)}. Shows up as: <em>${esc(b.where.trim())}</em></p>`;
     } else {
       box.innerHTML = `<span class="mono">Starting with your first one</span>
         <p><em>${esc(b.text)}</em></p>
@@ -880,6 +884,7 @@
 
   // ---------- boot ----------
   go(state.screen && SCREENS.includes(state.screen) ? state.screen : 'intro');
+  booted = true;
 })();
 </script>
 </body>
