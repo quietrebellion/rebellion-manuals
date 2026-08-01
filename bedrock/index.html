@@ -339,7 +339,7 @@
     <div class="stop">
       <span class="mono">/ &nbsp;Good place to stop&nbsp; /</span>
       <h2 id="h-pause" style="margin-top:1rem;">That&rsquo;s a full sitting.</h2>
-      <p style="max-width:44ch;margin:0 auto 1rem;">You&rsquo;ve written them down, sorted them, weighed them, and named what they protect. That&rsquo;s a full sitting. Stop here if you can. The next part asks whether these beliefs are even yours, and it goes better after a break. Your work is saved in this browser.</p>
+      <p style="max-width:44ch;margin:0 auto 1rem;">You&rsquo;ve written them down, sorted them, weighed them, and named what they protect. Stop here if you can. The next part asks whether these beliefs are even yours, and it goes better after a break. Your work is saved in this browser.</p>
       <div class="btn-row" style="justify-content:center;">
         <button class="btn-secondary" id="pauseExit">Close for today</button>
         <button class="btn-primary" data-go="yours">Keep going</button>
@@ -365,14 +365,14 @@
     <div id="yoursList"></div>
     <div class="btn-row">
       <button class="btn-secondary" data-go="pause">Back</button>
-      <button class="btn-primary" data-go="prompts">Next: go deeper</button>
+      <button class="btn-primary" data-go="prompts">Next: reflection prompts</button>
     </div>
   </section>
 
   <!-- PROMPTS -->
   <section class="screen" data-screen="prompts" aria-labelledby="h-prompts">
     <span class="mono kicker">Reflection prompts</span>
-    <h2 id="h-prompts">Going deeper</h2>
+    <h2 id="h-prompts">Questions worth sitting with</h2>
     <details class="beliefs-ref" open>
       <summary>Your beliefs, for reference</summary>
       <ol data-beliefs-ref></ol>
@@ -417,11 +417,11 @@
       <button class="btn-secondary" id="printPdf">Save as a PDF</button>
       <button class="btn-secondary" id="calBtn">Put the 30-day check-in on my calendar</button>
     </div>
-    <p class="hint" style="margin-top:.75rem;">The calendar button downloads a file. Open it and it puts one hold on your calendar, thirty days from today, with one question on it: which of these beliefs ran the month? It lives in your calendar app, so there&rsquo;s no email involved and nothing leaves this browser.</p>
+    <p class="hint" style="margin-top:.75rem;">The calendar button downloads a file. Open it and it puts one hold on your calendar, thirty days from today, with one question on it: which of these beliefs did you notice this month? It lives in your calendar app, so there&rsquo;s no email involved and nothing leaves this browser.</p>
 
     <div class="card kit-optin">
       <h3>Want the check-ins by email?</h3>
-      <p>Three emails: a nudge at one week, the day-thirty question, and a closing note.</p>
+      <p>Four emails: a note when you sign up, a nudge at one week, the day-thirty question, and a closing note.</p>
       <p>Nothing else unless you ask for it. Take the calendar hold, the emails, or both. Your answers stay on this browser either way.</p>
       <script async data-uid="0df3225616" src="https://rebellioncollective.kit.com/0df3225616/index.js"></script>
     </div>
@@ -501,7 +501,7 @@
   })();
 
   const SCREENS = ['intro', 'capture', 'behavior', 'weigh', 'protect', 'pause', 'yours', 'prompts', 'onething', 'summary'];
-  const LABELS = { intro: 'Start', capture: 'Step 1 · Write', behavior: 'Steps 2 & 3 · Find & sort', weigh: 'Step 4 · Weigh', protect: 'Step 5 · Protecting', pause: 'Pause', yours: 'Step 6 · Yours?', prompts: 'Go deeper', onething: 'One thing', summary: 'Your bedrock' };
+  const LABELS = { intro: 'Start', capture: 'Step 1 · Write', behavior: 'Steps 2 & 3 · Find & sort', weigh: 'Step 4 · Weigh', protect: 'Step 5 · Protecting', pause: 'Pause', yours: 'Step 6 · Yours?', prompts: 'Prompts', onething: 'One thing', summary: 'Your bedrock' };
 
   const $ = (s, el) => (el || document).querySelector(s);
   const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
