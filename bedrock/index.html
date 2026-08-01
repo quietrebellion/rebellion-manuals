@@ -142,6 +142,8 @@
   .rc-quote { border-left: 4px solid var(--ember); padding-left: 1rem; margin: 1.4rem 0; font-style: italic; color: var(--sage); }
   .rc-quote .attr { display: inline-block; margin-top: .35rem; font-style: normal; font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
   .rc-signoff { font-weight: 600; margin-bottom: 0; }
+  .rf-fear { background: #fff; border-left: 4px solid var(--ember); border-radius: 0 8px 8px 0; padding: .7rem .9rem; margin: .6rem 0 0; font-size: .95rem; }
+  .rf-fear strong { color: var(--teal); }
 
   .summary-block { white-space: pre-wrap; background: #fff; border: 2px solid var(--sage); border-radius: 10px; padding: 1.2rem; font-size: .92rem; max-height: 320px; overflow: auto; }
 
@@ -296,7 +298,7 @@
     <p>Even the worst of these did a job for you once.</p>
     <p>Maybe it kept you safe in a house where being useful was how you got loved.</p>
     <p>Maybe it carried you through a workplace that punished rest.</p>
-    <p>Beliefs that protect something stick around long after the danger is gone. So find what it protected, if it still needs that protection, and then be honest about what it costs you now.</p>
+    <p>So be honest about both sides. What it hands you, and what it takes.</p>
     <div class="card soft">
       <span class="mono">Example</span>
       <p><em>I have to be available.</em> Benefits: <em>a reputation for being reliable, two promotions on the back of it.</em> Costs: <em>six years of late evenings. My wife stopped asking if I was coming to dinner.</em></p>
@@ -304,6 +306,27 @@
     <div id="weighList"></div>
     <div class="btn-row">
       <button class="btn-secondary" data-go="behavior">Back</button>
+      <button class="btn-primary" data-go="protect">Next: what it&rsquo;s protecting</button>
+    </div>
+  </section>
+
+  <!-- STEP FIVE: PROTECTION -->
+  <section class="screen" data-screen="protect" aria-labelledby="h-protect">
+    <span class="mono kicker">Step five</span>
+    <h2 id="h-protect">What it&rsquo;s protecting</h2>
+    <p>A belief that costs you this much is still here for a reason.</p>
+    <p>It was protecting something. Maybe it kept you employed. Maybe it kept you from finding out something about yourself you didn&rsquo;t want to know.</p>
+    <p>Two questions for each one. What was it protecting you from back then, and if you put it down tomorrow, what are you afraid would happen?</p>
+    <div class="card soft">
+      <p>The second one is the live question. That fear is what holds the belief in place now, and it&rsquo;s what your test at the end has to go up against.</p>
+    </div>
+    <div class="card soft">
+      <span class="mono">Example</span>
+      <p><em>I have to be available.</em> Protected me from: <em>being seen as replaceable in a place that cut people every spring.</em> Afraid would happen: <em>they&rsquo;d find out things run fine without me.</em></p>
+    </div>
+    <div id="protectList"></div>
+    <div class="btn-row">
+      <button class="btn-secondary" data-go="weigh">Back</button>
       <button class="btn-primary" data-go="pause">Continue</button>
     </div>
   </section>
@@ -313,18 +336,18 @@
     <div class="stop">
       <span class="mono">/ &nbsp;Good place to stop&nbsp; /</span>
       <h2 id="h-pause" style="margin-top:1rem;">That&rsquo;s a full sitting.</h2>
-      <p style="max-width:44ch;margin:0 auto 1rem;">You&rsquo;ve written them down, sorted them, and weighed them, which is a full sitting. Stop here if you can. The next part asks whether these beliefs are even yours, and it goes better after a break. Your work is saved in this browser.</p>
+      <p style="max-width:44ch;margin:0 auto 1rem;">You&rsquo;ve written them down, sorted them, weighed them, and named what they protect. That&rsquo;s a full sitting. Stop here if you can. The next part asks whether these beliefs are even yours, and it goes better after a break. Your work is saved in this browser.</p>
       <div class="btn-row" style="justify-content:center;">
         <button class="btn-secondary" id="pauseExit">Close for today</button>
         <button class="btn-primary" data-go="yours">Keep going</button>
-        <button class="btn-ghost" data-go="weigh">Back</button>
+        <button class="btn-ghost" data-go="protect">Back</button>
       </div>
     </div>
   </section>
 
-  <!-- STEP FIVE -->
+  <!-- STEP SIX -->
   <section class="screen" data-screen="yours" aria-labelledby="h-yours">
-    <span class="mono kicker">Step five</span>
+    <span class="mono kicker">Step six</span>
     <h2 id="h-yours">Are they even yours?</h2>
     <p>Go back through your list one more time and ask two questions of each belief. Who taught me this, and who was it good for?</p>
     <div class="card">
@@ -413,6 +436,7 @@
       <p><em>I have to be available</em> becomes <em>things hold without me</em>. The test: one Saturday with Slack off.</p>
       <label for="rfOld">The belief you're putting down</label>
       <select id="rfOld" data-rf="old"></select>
+      <p id="rfFear" class="rf-fear" hidden></p>
       <label for="rfNew">What you&rsquo;d rather carry</label>
       <input type="text" id="rfNew" data-rf="next" placeholder="Your words. Half-believable beats inspiring.">
       <label for="rfTest">One test this month</label>
@@ -473,8 +497,8 @@
     } catch (e) { /* corrupted state: start fresh */ }
   })();
 
-  const SCREENS = ['intro', 'capture', 'behavior', 'weigh', 'pause', 'yours', 'prompts', 'onething', 'summary'];
-  const LABELS = { intro: 'Start', capture: 'Step 1 · Write', behavior: 'Steps 2 & 3 · Find & sort', weigh: 'Step 4 · Weigh', pause: 'Pause', yours: 'Step 5 · Yours?', prompts: 'Go deeper', onething: 'One thing', summary: 'Your bedrock' };
+  const SCREENS = ['intro', 'capture', 'behavior', 'weigh', 'protect', 'pause', 'yours', 'prompts', 'onething', 'summary'];
+  const LABELS = { intro: 'Start', capture: 'Step 1 · Write', behavior: 'Steps 2 & 3 · Find & sort', weigh: 'Step 4 · Weigh', protect: 'Step 5 · Protecting', pause: 'Pause', yours: 'Step 6 · Yours?', prompts: 'Go deeper', onething: 'One thing', summary: 'Your bedrock' };
 
   const $ = (s, el) => (el || document).querySelector(s);
   const $$ = (s, el) => Array.from((el || document).querySelectorAll(s));
@@ -493,6 +517,7 @@
     document.body.classList.toggle('working', name !== 'intro');
     if (name === 'behavior') renderBehavior();
     if (name === 'weigh') renderWeigh();
+    if (name === 'protect') renderProtect();
     if (name === 'yours') renderYours();
     if (name === 'prompts') { renderPrompts(); renderBeliefsRef(); }
     if (name === 'onething') { renderOneThing(); renderBeliefsRef(); }
@@ -533,7 +558,7 @@
     const el = $('#beliefInput');
     const text = el.value.trim();
     if (!text) { alertLine('Write the belief first, then add it.'); return; }
-    state.beliefs.push({ id: Date.now() + '-' + Math.floor(Math.random() * 1e6), text, chain: [], where: '', sort: '', benefit: '', cost: '', taught: '', whoFor: '', mark: '' });
+    state.beliefs.push({ id: Date.now() + '-' + Math.floor(Math.random() * 1e6), text, chain: [], where: '', sort: '', benefit: '', cost: '', protected: '', fear: '', taught: '', whoFor: '', mark: '' });
     el.value = ''; el.focus();
     save(); renderBeliefs();
   });
@@ -641,7 +666,19 @@
       </div>`).join('');
   }
 
-  // ---------- step five ----------
+  // ---------- step five: protection ----------
+  function renderProtect() {
+    $('#protectList').innerHTML = state.beliefs.map((b, i) => `
+      <div class="belief-item" data-id="${b.id}">
+        <p class="text">${i + 1}. ${esc(b.text)}</p>
+        <label for="prot-${b.id}">What was it protecting you from?</label>
+        <textarea id="prot-${b.id}" rows="2" data-field="protected" data-belief="${b.id}">${esc(b.protected || '')}</textarea>
+        <label for="fear-${b.id}">If you put it down tomorrow, what are you afraid would happen?</label>
+        <textarea id="fear-${b.id}" rows="2" data-field="fear" data-belief="${b.id}">${esc(b.fear || '')}</textarea>
+      </div>`).join('');
+  }
+
+  // ---------- step six ----------
   const MARKS = ['Mine', 'Handed to me', 'Handed to me, and I’m keeping it'];
   function renderYours() {
     $('#yoursList').innerHTML = state.beliefs.map((b, i) => `
@@ -731,6 +768,8 @@
       if (b.where) L.push('   Where it shows up: ' + b.where);
       if (b.benefit) L.push('   What it provides: ' + b.benefit);
       if (b.cost) L.push('   What it costs: ' + b.cost);
+      if (b.protected) L.push('   What it protected me from: ' + b.protected);
+      if (b.fear) L.push('   What I am afraid would happen without it: ' + b.fear);
       if (b.taught) L.push('   Who taught it: ' + b.taught);
       if (b.whoFor) L.push('   Who it was good for: ' + b.whoFor);
       L.push('');
@@ -765,8 +804,17 @@
     $('#rfOld').innerHTML = '<option value="">Choose one you marked handed to me</option>' +
       pool.map(b => `<option ${r.old === b.text ? 'selected' : ''}>${esc(b.text)}</option>`).join('');
     $('#rfNew').value = r.next || ''; $('#rfTest').value = r.test || '';
+    renderReframeFear();
   }
-  $('#rfOld').addEventListener('change', e => { state.reframe.old = e.target.value; save(); renderSummaryText(); });
+  function renderReframeFear() {
+    const box = $('#rfFear');
+    const chosen = state.beliefs.find(b => b.text === (state.reframe && state.reframe.old));
+    const fear = chosen && chosen.fear && chosen.fear.trim();
+    if (!fear) { box.hidden = true; box.innerHTML = ''; return; }
+    box.hidden = false;
+    box.innerHTML = `<strong>You said you were afraid that:</strong> ${esc(fear)}<br>Point the test at that.`;
+  }
+  $('#rfOld').addEventListener('change', e => { state.reframe.old = e.target.value; save(); renderSummaryText(); renderReframeFear(); });
 
   $('#copyAll').addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(summaryText()); $('#copyAll').textContent = 'Copied'; }
