@@ -1,0 +1,52 @@
+const { chromium } = require('playwright');
+const S = s => `[data-screen="${s}"]`;
+(async () => {
+  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' }).catch(() => chromium.launch());
+  const page = await b.newPage();
+  const errs = [];
+  page.on('pageerror', e => errs.push('PAGEERROR ' + e.message));
+  const go = async (from, to) => page.click(`${S(from)} [data-go="${to}"]`);
+  await page.goto('file:///home/claude/bedrock-microsite.html');
+  console.log('fake Slack example gone:', !(await page.content()).includes('I answer Slack at dinner'));
+  await go('intro','capture');
+  await page.fill('#beliefInput', 'I have to be available or it all falls apart');
+  await page.click('#addBelief');
+  await page.fill('#beliefInput', 'People eventually leave');
+  await page.click('#addBelief');
+  await go('capture','behavior');
+  const echo = page.locator('#behaviorEcho');
+  let t = (await echo.innerText()).toLowerCase();
+  console.log('echo shows their first belief:', t.includes('i have to be available or it all falls apart'));
+  console.log('echo prompt state:', t.includes('starting with your first one'));
+  console.log('echo ignores 2nd belief:', !t.includes('people eventually leave'));
+  const ids = await page.evaluate(() => JSON.parse(localStorage.getItem('bedrock-manual-v1')).beliefs.map(x => x.id));
+  console.log('ids are css-safe:', ids.every(i => !String(i).includes('.')));
+  await page.fill(`#w-${ids[0]}`, 'I answer messages at dinner');
+  await page.selectOption(`#s-${ids[0]}`, 'Personal');
+  await page.waitForTimeout(200);
+  t = (await echo.innerText()).toLowerCase();
+  console.log('echo upgrades to filled:', t.includes('your first one, filled in'));
+  console.log('echo shows sort and where:', t.includes('personal') && t.includes('i answer messages at dinner'));
+  await page.fill(`#w-${ids[0]}`, 'I answer messages at dinner and on weekends');
+  console.log('focus retained:', (await page.evaluate(() => document.activeElement.id)) === `w-${ids[0]}`);
+  // step 4 copy
+  await go('behavior','weigh');
+  const w = await page.locator(S('weigh')).innerText();
+  console.log('step4 protection clause moved out:', !w.includes('if it still needs that protection'));
+  console.log('step4 paras:', await page.locator(`${S('weigh')} > p`).count());
+  // XSS
+  await go('weigh','behavior');
+  await go('behavior','capture');
+  await page.fill('#beliefInput', '<img src=x onerror=alert(1)>');
+  await page.click('#addBelief');
+  await go('capture','behavior');
+  console.log('no injected element in echo:', await page.locator('#behaviorEcho img').count() === 0);
+  // empty state
+  await page.evaluate(() => localStorage.removeItem('bedrock-manual-v1'));
+  await page.reload();
+  await go('intro','capture');
+  await go('capture','behavior').catch(()=>{});
+  console.log('echo hidden with zero beliefs:', !(await page.locator('#behaviorEcho').isVisible()));
+  console.log('js errors:', errs.length ? errs : 'none');
+  await b.close();
+})().catch(e => { console.error('FAIL', e.message); process.exit(1); });
