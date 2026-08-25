@@ -7,7 +7,12 @@ const { chromium } = require('playwright');
   await p.click('[data-screen="intro"] [data-go="capture"]');
   await p.fill('#beliefInput', 'I have to be available; always, no matter what, or it falls apart');
   await p.click('#addBelief');
-  for (const s of ['behavior','weigh','pause','yours','prompts','onething','summary']) await p.click(`[data-screen="${['capture','behavior','weigh','pause','yours','prompts','onething'][['behavior','weigh','pause','yours','prompts','onething','summary'].indexOf(s)]}"] [data-go="${s}"]`);
+  // Screen order, in full. 'protect' was added after this script was first written and
+  // the old hop from weigh straight to pause no longer resolves.
+  const FLOW = ['capture','behavior','weigh','protect','pause','yours','prompts','onething','summary'];
+  for (let i = 1; i < FLOW.length; i++) {
+    await p.click(`[data-screen="${FLOW[i - 1]}"] [data-go="${FLOW[i]}"]`);
+  }
   const ics = await p.evaluate(() => {
     let cap = null; const o = URL.createObjectURL;
     URL.createObjectURL = blob => { cap = blob; return 'blob:stub'; };
