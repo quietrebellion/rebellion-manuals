@@ -417,7 +417,7 @@
       <button class="btn-secondary" id="printPdf">Save as a PDF</button>
       <button class="btn-secondary" id="calBtn">Put the 30-day check-in on my calendar</button>
     </div>
-    <p class="hint" style="margin-top:.75rem;">The calendar button downloads a file. Open it and it puts one hold on your calendar, thirty days from today, with one question on it: which of these beliefs did you notice this month? It lives in your calendar app, so there&rsquo;s no email involved and nothing leaves this browser.</p>
+    <p class="hint" style="margin-top:.75rem;">The calendar button downloads a file. Open it and it puts one hold on your calendar, thirty days from today, with one question on it: which core belief did you notice this month? It lives in your calendar app, so there&rsquo;s no email involved and nothing leaves this browser.</p>
 
     <div class="card kit-optin">
       <h3>Want the check-ins by email?</h3>
@@ -857,8 +857,8 @@
       'DTSTAMP:' + stamp,
       'DTSTART;VALUE=DATE:' + ymd(start),
       'DTEND;VALUE=DATE:' + ymd(end),
-      fold('SUMMARY:' + ie('Bedrock check-in: which core beliefs did you notice this month?')),
-      fold('DESCRIPTION:' + ie('Get out your Bedrock list. One question: which of these beliefs did you notice this month? Your list is still in the browser you used: https://manuals.rebellioncollective.com/bedrock/')),
+      fold('SUMMARY:' + ie('Bedrock check-in: which core belief did you notice this month?')),
+      fold('DESCRIPTION:' + ie('Get out your Bedrock list. Which core belief did you notice this month? Your list is still in the browser you used: https://manuals.rebellioncollective.com/bedrock/')),
       fold('URL:' + ie('https://manuals.rebellioncollective.com/bedrock/')),
       'END:VEVENT',
       'END:VCALENDAR'
@@ -886,6 +886,27 @@
   // ---------- boot ----------
   go(state.screen && SCREENS.includes(state.screen) ? state.screen : 'intro');
   booted = true;
+})();
+</script>
+<script>
+/* Kit renders its embed input as type="text", so phones give a plain keyboard and
+   browsers skip email autofill. Upgrade it once the embed paints, then stop watching. */
+(function () {
+  var card = document.querySelector('.kit-optin');
+  if (!card || !window.MutationObserver) return;
+  function upgrade() {
+    var i = card.querySelector('input[name="email_address"]');
+    if (!i) return false;
+    i.setAttribute('type', 'email');
+    i.setAttribute('inputmode', 'email');
+    i.setAttribute('autocomplete', 'email');
+    if (!i.getAttribute('aria-label')) i.setAttribute('aria-label', 'Email address');
+    return true;
+  }
+  if (upgrade()) return;
+  var obs = new MutationObserver(function () { if (upgrade()) obs.disconnect(); });
+  obs.observe(card, { childList: true, subtree: true });
+  setTimeout(function () { obs.disconnect(); }, 20000);
 })();
 </script>
 </body>
